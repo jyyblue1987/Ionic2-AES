@@ -23,13 +23,6 @@ export class HomePage {
 	    this.plain_text = '';
 	    this.encrypted_text = '';
 	    this.decrypted_text = '';
-
-	    // var decrypted = CryptoJS.AES.decrypt(encrypted, key, {
-	    //                                       iv: iv,
-	    //                                       mode: CryptoJS.mode.CBC,
-	    //                                       padding: CryptoJS.pad.Pkcs7
-	    //                                     }).toString(CryptoJS.enc.Utf8);
-	    // console.log(decrypted);
   	}
 
   	encrypt(event): void {
