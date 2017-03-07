@@ -1,14 +1,34 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
+	<ion-navbar>
+		<ion-title>
+		  	AES Test
+		</ion-title>
+	</ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  	<ion-list>
+  		<ion-item>
+	    	<button ion-button full style="height: 40px" (click)="encrypt()">Encrypt</button>	    	
+	  	</ion-item>
+		<ion-item>
+	    	<ion-label floating>Plain Text</ion-label>
+	    	<ion-input type="text" value="" [(ngModel)]="plain_text"></ion-input>
+	  	</ion-item>
+
+	  	<ion-item>
+	    	<ion-label floating>Encrypted</ion-label>
+	    	<ion-input type="text" value="" [(ngModel)]="encrypted_text"></ion-input>
+	  	</ion-item>
+
+	  	<ion-item>
+	    	<button ion-button full color="secondary" style="height: 40px" (click)="decrypt()">Decrypt</button>	    	
+	  	</ion-item>
+		<ion-item>
+	    	<span>Decrypted Result</span>	    	
+	    	<div style="margin-top: 30px">{{decrypted_text}}</div>
+	  	</ion-item>
+	</ion-list>
+
+
 </ion-content>
