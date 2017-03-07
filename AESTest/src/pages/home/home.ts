@@ -14,10 +14,7 @@ export class HomePage {
 	encrypted_text: string;
 	decrypted_text: string;
   	constructor(public navCtrl: NavController) {
-    	var text = "What are you doing?";
-	    var key = CryptoJS.enc.Hex.parse("882E91D56547F1CF7ED6BAAD9C3EAAF5");
-	    var iv  = CryptoJS.enc.Hex.parse("2811da22377d62fcfdb02f29aad77d9e");
-	    this.key = CryptoJS.enc.Hex.parse("882E91D56547F1CF7ED6BAAD9C3EAAF5");
+        this.key = CryptoJS.enc.Hex.parse("882E91D56547F1CF7ED6BAAD9C3EAAF5");
 	    this.iv  = CryptoJS.enc.Hex.parse("2811da22377d62fcfdb02f29aad77d9e");
 
 	    this.plain_text = '';
