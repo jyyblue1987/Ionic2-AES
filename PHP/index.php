@@ -2,17 +2,17 @@
 
 $key = hex2bin("882E91D56547F1CF7ED6BAAD9C3EAAF5");
 $iv = hex2bin("2811da22377d62fcfdb02f29aad77d9e");
-$data = "test";
+// $data = "test";
 
-$encrypted = encrypt ($key, $iv, $data) ;   
-printf("256-bit encrypted result:\n%s\n<br/>",$encrypted);
+// $encrypted = encrypt ($key, $iv, $data) ;   
+// printf("256-bit encrypted result:\n%s\n<br/>",$encrypted);
 
-$encrypted = 'PL7OFt0LzPm827qNQmJZSS8iiQ6iZNu1bAhTvPYJ0bM=';
-$encrypted = "zp3v1p98JYF2ke9MuDIVFA==";
+$encrypted = "H9Aa30y8UsOk4S5xjpkf/w==";
+
+$encrypted = $_GET['param'];
 
 $decrypted = decrypt ($key, $iv, $encrypted) ; 
-printf("256-bit decrypted result:\n%s\n\n",$decrypted);
-
+printf("decrypted result:\n%s\n\n",$decrypted);
 
 function toPkcs7 ($value)
 {

@@ -1,0 +1,31 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>
+		  	AES Test
+		</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  	<ion-list>
+  		<ion-item>
+	    	<button ion-button full style="height: 40px" (click)="encrypt()">Encrypt</button>	    	
+	  	</ion-item>
+		<ion-item>
+	    	<ion-label floating>Plain Text</ion-label>
+	    	<ion-input type="text" value="" [(ngModel)]="plain_text"></ion-input>
+	  	</ion-item>
+
+	  	<ion-item>
+	    	<ion-label floating>Encrypted</ion-label>
+	    	<ion-input type="text" value="" [(ngModel)]="encrypted_text"></ion-input>
+	  	</ion-item>
+
+	  	<ion-item>
+	    	<span>Payment URL</span>
+	    	<a href="{{payment_var}}">{{payment_var}}</a>	    	
+	  	</ion-item>
+	</ion-list>
+
+
+</ion-content>
