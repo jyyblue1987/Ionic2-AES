@@ -50,8 +50,7 @@ export class AuthService {
               }).toString();
 
   		storage.set('encrypted', encrypted);
-
-   		
+  		storage.set('touch_id_flag', 1);
   	}
 
   	loginWithDecrypt(): any {
@@ -65,7 +64,7 @@ export class AuthService {
 		                                          padding: CryptoJS.pad.Pkcs7
 		                                        }).toString(CryptoJS.enc.Utf8);
 
-	  			var res = decrypted.split(":");
+	  			var res = decrypted.split("|");
 	  			var username = res[0];
 	  			var password = res[1];
 

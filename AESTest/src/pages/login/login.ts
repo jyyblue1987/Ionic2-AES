@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {AuthService} from '../../providers/auth-service';
+import { AlertController } from 'ionic-angular';
 
 /*
   Generated class for the Login page.
@@ -16,7 +17,7 @@ import {AuthService} from '../../providers/auth-service';
 export class LoginPage {
 	username: string;
 	password: string;
-  	constructor(public navCtrl: NavController, public navParams: NavParams, private auth: AuthService) {
+  	constructor(public navCtrl: NavController, public navParams: NavParams, private auth: AuthService, public alertCtrl: AlertController) {
   		this.username = '';
   		this.password = '';
   	}
@@ -26,10 +27,44 @@ export class LoginPage {
   	}
 
   	login(event): void {  		
-	   	// this.auth.login(this.username, this.password).subscribe(response => {
-     //        this.auth.encrypt(response.username, response.password);
-     //    });
-     	this.auth.loginWithDecrypt().then( data => console.log(data) );
+	   	this.auth.login(this.username, this.password).subscribe(response => {            
+            this.showAlert();
+        });
+     	
+     	// 
   	}
 
+  	showMessage(message:string) {
+  		let alert = this.alertCtrl.create({
+	    	title: 'Login',
+	    	subTitle: message,
+	    	buttons: ['OK']
+	    });
+
+	    alert.present();
+  	}
+
+	showAlert() {
+	    let alert = this.alertCtrl.create({
+	    	title: 'Login',
+	    	subTitle: 'Do you want to use touch id to log in next time?',
+	    	buttons: [
+	        	{
+	          		text: 'Cancel',
+	          		handler: data => {
+	            		console.log('Cancel clicked');
+	          		}
+	        	},
+	        	{
+	          		text: 'OK',
+		          	handler: data => {
+		          		this.auth.encrypt(this.username, this.password);
+		            	this.showMessage("Login is OK");
+		          	}
+	        	}
+      		]
+	    });
+
+	    alert.present();
+	}
 }
