@@ -30,6 +30,8 @@ export class TouchIdPage {
 		  err => this.showMessage('TouchID is not available')
 		);
 
+		// this.auth.loginWithDecrypt().then( data => this.showMessage('Login is OK') )
+
 	}
 
 	doLogin(): void {

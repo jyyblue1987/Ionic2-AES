@@ -41,7 +41,8 @@ export class AuthService {
   	}
 
   	encrypt(username: string, password: string) {
-  		var plaint_text = username + "|" + password;
+      var data = {username: username, password: password};
+  		var plaint_text = JSON.stringify(data);
 
   		var encrypted = CryptoJS.AES.encrypt(plaint_text, this.key, {
                 iv: this.iv,
@@ -64,9 +65,9 @@ export class AuthService {
 		                                          padding: CryptoJS.pad.Pkcs7
 		                                        }).toString(CryptoJS.enc.Utf8);
 
-	  			var res = decrypted.split("|");
-	  			var username = res[0];
-	  			var password = res[1];
+	  			var res = JSON.parse(decrypted);
+	  			var username = res.username;
+	  			var password = res.password;
 
 	  			self.login(username, password).subscribe(response => {
 		            resolve(response);
