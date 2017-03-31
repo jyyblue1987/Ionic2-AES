@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { File } from '@ionic-native/file';
 import { FileOpener } from '@ionic-native/file-opener';
@@ -25,7 +25,7 @@ import { FileOpener } from '@ionic-native/file-opener';
 })
 export class PdfPage {
 
-  	constructor(public navCtrl: NavController, public navParams: NavParams, private file: File, private fileOpener: FileOpener, public alertCtrl: AlertController) {}
+  	constructor(public navCtrl: NavController, public navParams: NavParams, private file: File, private fileOpener: FileOpener, public alertCtrl: AlertController, public plt: Platform) {}
 
   	ionViewDidLoad() {
     console.log('ionViewDidLoad PdfPage');
@@ -40,7 +40,16 @@ export class PdfPage {
 		var contentType = "application/pdf";
 		// if cordova.file is not available use instead :
 		// var folderpath = "file:///storage/emulated/0/";
-		var folderpath = this.file.externalRootDirectory;
+		var folderpath = this.file.dataDirectory;
+		
+		if (this.plt.is('ios')) {
+			folderpath = this.file.dataDirectory;	    	      	
+    	}
+
+    	if (this.plt.is('android')) {
+			folderpath = this.file.externalRootDirectory;	    	      	
+    	}
+
 		// var folderpath = this.file.dataDirectory;
 		var filename = "helloWorld.pdf";
 
