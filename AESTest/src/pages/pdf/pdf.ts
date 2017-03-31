@@ -40,8 +40,8 @@ export class PdfPage {
 		var contentType = "application/pdf";
 		// if cordova.file is not available use instead :
 		// var folderpath = "file:///storage/emulated/0/";
-		// var folderpath = this.file.externalRootDirectory;
-		var folderpath = this.file.dataDirectory;
+		var folderpath = this.file.externalRootDirectory;
+		// var folderpath = this.file.dataDirectory;
 		var filename = "helloWorld.pdf";
 
 		this.savebase64AsPDF(folderpath,filename,myBase64,contentType);
