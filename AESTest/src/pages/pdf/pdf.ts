@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 import { File } from '@ionic-native/file';
+import { FileOpener } from '@ionic-native/file-opener';
 
 /*
   Generated class for the Pdf page.
@@ -13,15 +15,17 @@ import { File } from '@ionic-native/file';
 	ionic plugin add cordova-plugin-file
 	npm install --save @ionic-native/core
 	npm install --save @ionic-native/file
+	ionic plugin add cordova-plugin-file-opener2
+	npm install --save @ionic-native/file-opener
 */
 @Component({
   selector: 'page-pdf',
   templateUrl: 'pdf.html',
-  providers: [File]
+  providers: [File, FileOpener]
 })
 export class PdfPage {
 
-  	constructor(public navCtrl: NavController, public navParams: NavParams, private file: File) {}
+  	constructor(public navCtrl: NavController, public navParams: NavParams, private file: File, private fileOpener: FileOpener, public alertCtrl: AlertController) {}
 
   	ionViewDidLoad() {
     console.log('ionViewDidLoad PdfPage');
@@ -89,12 +93,15 @@ export class PdfPage {
 	    console.log("Starting to write the file :3");
 
 	    this.file.writeFile(folderpath, filename, dataBlob, {replace: true})
-	    	.then( () => {console.log("write complete:")}
-	      ).catch(
-	        err => {
-	          console.log("file create failed:",err);
-	        }
-	      );    
+	    	.then( () => {
+		    		console.log("write complete:");
+		    		this.openPDF(folderpath + '/' + filename);
+		    	}	    		
+	      	).catch(
+		        err => {
+		          console.log("file create failed:",err);
+		        }
+	      	);    
 		    	
 	    
 	  //   window.resolveLocalFileSystemURL(folderpath, function(dir) {
@@ -109,6 +116,32 @@ export class PdfPage {
 	  //           });
 			// });
 	  //   });
+	}
+
+	openPDF(path: string): void {
+		let prompt = this.alertCtrl.create({
+	      title: 'Open PDF',
+	      message: "Do you want to open this " + path,	     
+	      buttons: [
+	        {
+	          text: 'Cancel',
+	          handler: data => {
+	            console.log('Cancel clicked');
+	          }
+	        },
+	        {
+	          text: 'Open',
+	          handler: data => {
+	            console.log('Open clicked');
+	            this.fileOpener.open(path, 'application/pdf')
+				  .then(() => console.log('File is opened'))
+				  .catch(e => console.log('Error openening file', e));
+	          }
+	        }
+	      ]
+	    });
+	    prompt.present();
+		
 	}
 
 }
