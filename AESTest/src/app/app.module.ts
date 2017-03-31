@@ -4,13 +4,15 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { TouchIdPage } from '../pages/touch-id/touch-id';
+import { PdfPage } from '../pages/pdf/pdf';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     LoginPage,
-    TouchIdPage
+    TouchIdPage,
+    PdfPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -20,7 +22,8 @@ import { TouchIdPage } from '../pages/touch-id/touch-id';
     MyApp,
     HomePage,
     LoginPage,
-    TouchIdPage
+    TouchIdPage,
+    PdfPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
