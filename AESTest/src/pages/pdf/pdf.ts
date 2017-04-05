@@ -24,6 +24,8 @@ import { FileOpener } from '@ionic-native/file-opener';
   providers: [File, FileOpener]
 })
 export class PdfPage {
+	pdfSrc: string = '';
+  	page: number = 1;
 
   	constructor(public navCtrl: NavController, public navParams: NavParams, private file: File, private fileOpener: FileOpener, public alertCtrl: AlertController, public plt: Platform) {}
 
@@ -143,9 +145,10 @@ export class PdfPage {
 	          text: 'Open',
 	          handler: data => {
 	            console.log('Open clicked');
-	            this.fileOpener.open(path, 'application/pdf')
-				  .then(() => console.log('File is opened'))
-				  .catch(e => console.log('Error openening file', e));
+	            this.pdfSrc = path;
+	     //        this.fileOpener.open(path, 'application/pdf')
+				  // .then(() => console.log('File is opened'))
+				  // .catch(e => console.log('Error openening file', e));
 	          }
 	        }
 	      ]

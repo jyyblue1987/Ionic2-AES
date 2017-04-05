@@ -5,6 +5,7 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { TouchIdPage } from '../pages/touch-id/touch-id';
 import { PdfPage } from '../pages/pdf/pdf';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { PdfPage } from '../pages/pdf/pdf';
     HomePage,
     LoginPage,
     TouchIdPage,
-    PdfPage
+    PdfPage,
+    PdfViewerComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -23,7 +25,8 @@ import { PdfPage } from '../pages/pdf/pdf';
     HomePage,
     LoginPage,
     TouchIdPage,
-    PdfPage
+    PdfPage,
+    PdfViewerComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
