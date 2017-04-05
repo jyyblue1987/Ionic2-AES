@@ -26,6 +26,8 @@ import { FileOpener } from '@ionic-native/file-opener';
 export class PdfPage {
 	pdfSrc: string = '';
   	page: number = 1;
+  	zoom: number = 100;
+  	zoompdf: number = 1.0;
 
   	constructor(public navCtrl: NavController, public navParams: NavParams, private file: File, private fileOpener: FileOpener, public alertCtrl: AlertController, public plt: Platform) {}
 
@@ -155,6 +157,11 @@ export class PdfPage {
 	    });
 	    prompt.present();
 		
+	}
+
+	updateResults(): void {		
+		this.zoompdf = 2.5 - this.zoom / 100;
+		console.log(this.zoompdf);
 	}
 
 }
