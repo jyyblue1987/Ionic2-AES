@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Component } from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import CryptoJS from 'crypto-js';
 import { Storage } from '@ionic/storage';
+import { Platform } from 'ionic-angular';
+import { AndroidFingerprintAuth, AFAAuthOptions } from '@ionic-native/android-fingerprint-auth';
 
 /*
   Generated class for the AuthService provider.
@@ -13,13 +16,14 @@ import { Storage } from '@ionic/storage';
 */
 
 let storage = new Storage();
+let androidFingerprintAuth = new AndroidFingerprintAuth();
 
 @Injectable()
 export class AuthService {
 	key: any;
 	iv: any;
 	data: any;
-  	constructor(public http: Http) {
+  	constructor(public http: Http, public plt: Platform) {
   		this.key = CryptoJS.enc.Hex.parse("882E91D56547F1CF7ED6BAAD9C3EAAF5");
 	    this.iv  = CryptoJS.enc.Hex.parse("2811da22377d62fcfdb02f29aad77d9e");
 
@@ -52,6 +56,36 @@ export class AuthService {
 
   		storage.set('encrypted', encrypted);
   		storage.set('touch_id_flag', 1);
+
+      androidFingerprintAuth.isAvailable()
+        .then((result)=> {
+          if(result.isAvailable){
+            // it is available
+
+            androidFingerprintAuth.encrypt({ clientId: "myAppName", username: username, password: password })
+              .then(result => {
+                 if (result.withFingerprint) {
+                     console.log("Successfully encrypted credentials.");
+                     console.log("Encrypted credentials: " + result.token);
+
+                     var credentials = {clientId: "myAppName", username: username, token: result.token};
+                     storage.set('credentials', JSON.stringify(credentials));                     
+
+                 } else if (result.withBackup) {
+                   console.log('Successfully authenticated with backup password!');
+                 } else console.log('Didn\'t authenticate!');
+              })
+              .catch(error => {
+                 if (error === "Cancelled") {
+                   console.log("Fingerprint authentication cancelled");
+                 } else console.error(error)
+              });
+
+          } else {
+            // fingerprint auth isn't available
+          }
+        })
+        .catch(error => console.error(error));
   	}
 
   	loginWithDecrypt(): any {
@@ -73,7 +107,7 @@ export class AuthService {
 		            resolve(response);
 		        });
 	        });
-		});	  		
+		  });	  		
   	}
 
 }

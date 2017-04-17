@@ -23,17 +23,17 @@ export class MyApp {
         StatusBar.styleDefault();
         Splashscreen.hide();
         this.rootPage = PdfPage;
-        // storage.set('touch_id_flag', 0);
-        // storage.get('touch_id_flag').then((val) => {
-        //   if(val == 1)
-        //   {
-        //     this.rootPage = TouchIdPage;
-        //   }
-        //   else
-        //   {
-        //     this.rootPage = LoginPage;
-        //   }
-        // });  
+        storage.set('touch_id_flag', 0);
+        storage.get('touch_id_flag').then((val) => {
+          if(val == 1)
+          {
+            this.rootPage = TouchIdPage;
+          }
+          else
+          {
+            this.rootPage = LoginPage;
+          }
+        });  
     });
   }
 }
