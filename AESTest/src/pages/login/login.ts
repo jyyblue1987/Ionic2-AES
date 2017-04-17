@@ -47,7 +47,7 @@ export class LoginPage {
 	showAlert() {
 	    let alert = this.alertCtrl.create({
 	    	title: 'Login',
-	    	subTitle: 'Do you want to use touch id to log in next time?',
+	    	subTitle: 'Do you want to use Fingerprint to log in next time?',
 	    	buttons: [
 	        	{
 	          		text: 'Cancel',
@@ -58,8 +58,10 @@ export class LoginPage {
 	        	{
 	          		text: 'OK',
 		          	handler: data => {
-		          		this.auth.encrypt(this.username, this.password);
-		            	this.showMessage("Login is OK");
+		          		this.auth.encrypt(this.username, this.password).then((result)=> {
+					    		this.showMessage("Login is OK");
+				  		})
+				  		.catch(error => this.showMessage(error) );		            	
 		          	}
 	        	}
       		]

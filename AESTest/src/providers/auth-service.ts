@@ -44,59 +44,73 @@ export class AuthService {
      //    	});
   	}
 
-  	encrypt(username: string, password: string) {
+  	encrypt(username: string, password: string): any {
       var data = {clientId: "myAppName", username: username, password: password};
   		
+      return new Promise(function(resolve, reject) {
 
-      if( this.plt.is('android') )
-      {
-        androidFingerprintAuth.isAvailable()
-        .then((result)=> {
-          if(result.isAvailable){
-            // it is available
+          if( this.plt.is('android') )
+          {
+            androidFingerprintAuth.isAvailable()
+              .then((result)=> {
+                if(result.isAvailable){
+                  // it is available
 
-            androidFingerprintAuth.encrypt(data)
-              .then(result => {
-                 if (result.withFingerprint) {
-                     console.log("Successfully encrypted credentials.");
-                     console.log("Encrypted credentials: " + result.token);
+                  androidFingerprintAuth.encrypt(data)
+                    .then(result => {
+                       if (result.withFingerprint) {
+                           console.log("Successfully encrypted credentials.");
+                           console.log("Encrypted credentials: " + result.token);
 
-                     var credentials = {clientId: "myAppName", username: username, token: result.token};
-                     storage.set('credentials', JSON.stringify(credentials));        
-                     storage.set('touch_id_flag', 1);             
+                           var credentials = {clientId: "myAppName", username: username, token: result.token};
+                           storage.set('credentials', JSON.stringify(credentials));        
+                           storage.set('touch_id_flag', 1);  
 
-                 } else if (result.withBackup) {
-                   console.log('Successfully authenticated with backup password!');
-                   storage.set('touch_id_flag', 1);
-                 } else console.log('Didn\'t authenticate!');
+                           resolve(result);           
+
+                       } else if (result.withBackup) {
+                         console.log('Successfully authenticated with backup password!');
+                         storage.set('touch_id_flag', 1);
+                         resolve(result);
+                       } 
+                       else
+                       {
+                        console.log('Didn\'t authenticate!');
+                        reject('Didn\'t authenticate!');
+                        }
+                    })
+                    .catch(error => {
+                       if (error === "Cancelled") {
+                         console.log("Fingerprint authentication cancelled");
+                         reject("Fingerprint authentication cancelled");
+                       } else 
+                         reject(error);
+                    });
+
+                } else {
+                  // fingerprint auth isn't available
+                  reject("Fingerprint auth isn't available");
+                }
               })
-              .catch(error => {
-                 if (error === "Cancelled") {
-                   console.log("Fingerprint authentication cancelled");
-                 } else console.error(error)
-              });
-
-          } else {
-            // fingerprint auth isn't available
+              .catch(error => reject("Fingerprint auth isn't available"));
           }
-        })
-        .catch(error => console.error(error));
-      }
-      
-      if( this.plt.is('ios') )
-      {
-        var plaint_text = JSON.stringify(data);
+          
+          if( this.plt.is('ios') )
+          {
+            var plaint_text = JSON.stringify(data);
 
-        var encrypted = CryptoJS.AES.encrypt(plaint_text, this.key, {
-                  iv: this.iv,
-                  mode: CryptoJS.mode.CBC,
-                  padding: CryptoJS.pad.Pkcs7
-                }).toString();
+            var encrypted = CryptoJS.AES.encrypt(plaint_text, this.key, {
+                      iv: this.iv,
+                      mode: CryptoJS.mode.CBC,
+                      padding: CryptoJS.pad.Pkcs7
+                    }).toString();
 
-        storage.set('encrypted', encrypted);
-        storage.set('touch_id_flag', 1);
-      }
-      
+            storage.set('encrypted', encrypted);
+            storage.set('touch_id_flag', 1);
+            resolve(encrypted);
+          }
+         
+        });    
   	}
 
   	loginWithDecrypt(): any {
