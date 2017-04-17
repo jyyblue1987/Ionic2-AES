@@ -47,9 +47,11 @@ export class AuthService {
   	encrypt(username: string, password: string): any {
       var data = {clientId: "myAppName", username: username, password: password};
   		
+      var self = this;
+
       return new Promise(function(resolve, reject) {
 
-          if( this.plt.is('android') )
+          if( self.plt.is('android') )
           {
             androidFingerprintAuth.isAvailable()
               .then((result)=> {
@@ -95,12 +97,12 @@ export class AuthService {
               .catch(error => reject("Fingerprint auth isn't available"));
           }
           
-          if( this.plt.is('ios') )
+          if( self.plt.is('ios') )
           {
             var plaint_text = JSON.stringify(data);
 
-            var encrypted = CryptoJS.AES.encrypt(plaint_text, this.key, {
-                      iv: this.iv,
+            var encrypted = CryptoJS.AES.encrypt(plaint_text, self.key, {
+                      iv: self.iv,
                       mode: CryptoJS.mode.CBC,
                       padding: CryptoJS.pad.Pkcs7
                     }).toString();
