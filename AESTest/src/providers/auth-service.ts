@@ -45,34 +45,29 @@ export class AuthService {
   	}
 
   	encrypt(username: string, password: string) {
-      var data = {username: username, password: password};
-  		var plaint_text = JSON.stringify(data);
+      var data = {clientId: "myAppName", username: username, password: password};
+  		
 
-  		var encrypted = CryptoJS.AES.encrypt(plaint_text, this.key, {
-                iv: this.iv,
-                mode: CryptoJS.mode.CBC,
-                padding: CryptoJS.pad.Pkcs7
-              }).toString();
-
-  		storage.set('encrypted', encrypted);
-  		storage.set('touch_id_flag', 1);
-
-      androidFingerprintAuth.isAvailable()
+      if( this.plt.is('android') )
+      {
+        androidFingerprintAuth.isAvailable()
         .then((result)=> {
           if(result.isAvailable){
             // it is available
 
-            androidFingerprintAuth.encrypt({ clientId: "myAppName", username: username, password: password })
+            androidFingerprintAuth.encrypt(data)
               .then(result => {
                  if (result.withFingerprint) {
                      console.log("Successfully encrypted credentials.");
                      console.log("Encrypted credentials: " + result.token);
 
                      var credentials = {clientId: "myAppName", username: username, token: result.token};
-                     storage.set('credentials', JSON.stringify(credentials));                     
+                     storage.set('credentials', JSON.stringify(credentials));        
+                     storage.set('touch_id_flag', 1);             
 
                  } else if (result.withBackup) {
                    console.log('Successfully authenticated with backup password!');
+                   storage.set('touch_id_flag', 1);
                  } else console.log('Didn\'t authenticate!');
               })
               .catch(error => {
@@ -86,6 +81,22 @@ export class AuthService {
           }
         })
         .catch(error => console.error(error));
+      }
+      
+      if( this.plt.is('ios') )
+      {
+        var plaint_text = JSON.stringify(data);
+
+        var encrypted = CryptoJS.AES.encrypt(plaint_text, this.key, {
+                  iv: this.iv,
+                  mode: CryptoJS.mode.CBC,
+                  padding: CryptoJS.pad.Pkcs7
+                }).toString();
+
+        storage.set('encrypted', encrypted);
+        storage.set('touch_id_flag', 1);
+      }
+      
   	}
 
   	loginWithDecrypt(): any {
@@ -99,15 +110,51 @@ export class AuthService {
 		                                          padding: CryptoJS.pad.Pkcs7
 		                                        }).toString(CryptoJS.enc.Utf8);
 
-	  			var res = JSON.parse(decrypted);
-	  			var username = res.username;
-	  			var password = res.password;
+  	  			var res = JSON.parse(decrypted);
+  	  			var username = res.username;
+  	  			var password = res.password;
 
-	  			self.login(username, password).subscribe(response => {
-		            resolve(response);
-		        });
+  	  			self.login(username, password).subscribe(response => {
+  		            resolve(response);
+  		        });
 	        });
 		  });	  		
   	}
+
+    loginWithFingerprint(): any {
+      var self = this;
+      
+      return new Promise(function(resolve, reject) {
+          storage.get('credentials').then((val) => {
+            var credentials = JSON.parse(val);
+
+            androidFingerprintAuth.decrypt(credentials)
+                .then(result => {
+                  console.log("successCallback(): " + JSON.stringify(result));
+                  if (result.withFingerprint) {
+                      console.log("Successful biometric authentication.");
+                      if (result.password) {
+                          console.log("Successfully decrypted credential token.");
+                          console.log("password: " + result.password);  
+
+                          self.login(credentials.username, result.password).subscribe(response => {
+                              resolve(response);
+                          });  
+                      }
+                  } else if (result.withBackup) {
+                      console.log("Authenticated with backup password");
+                      reject({});
+                  }
+                })
+                .catch(error => {
+                   if (error === "Cancelled") {
+                     console.log("Fingerprint authentication cancelled");
+                   } else console.error(error)
+                   reject(error);
+                });
+            });        
+        });    
+    }
+    
 
 }
