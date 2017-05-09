@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Platform, NavController, Nav } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 import { Storage } from '@ionic/storage';
 
@@ -12,9 +12,11 @@ import {Events} from 'ionic-angular';
 let storage = new Storage();
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
 })
 export class MyApp {
+  @ViewChild(Nav) nav: Nav;
+
   rootPage: any;
   action_time: any;
   idleChecker: any;
@@ -54,11 +56,16 @@ export class MyApp {
 
     this.idleChecker = setInterval(function() {
          var current_time = new Date().getTime();
-         if( current_time - self.action_time > 60 * 1000 )
+         if( current_time - self.action_time > 10 * 1000 )
          {
            console.log('timeout');
+           self.gotoLoginPage();
            self.action_time = current_time;
          }
      }, 1000 * 10);
+  }
+
+  gotoLoginPage() {
+    this.nav.setRoot(LoginPage);
   }
 }
