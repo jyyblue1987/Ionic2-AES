@@ -28,8 +28,7 @@ export class AuthService {
 	    this.iv  = CryptoJS.enc.Hex.parse("2811da22377d62fcfdb02f29aad77d9e");
 
   		this.http = http;
-    	this.data = null;
-    	console.log('Hello AuthService Provider');
+    	this.data = null;    	
   	}
 
   	login(username:string, password:string): any {

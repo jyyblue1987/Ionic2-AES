@@ -4,6 +4,7 @@ import {AuthService} from '../../providers/auth-service';
 import { AlertController } from 'ionic-angular';
 import { BasePage } from '../basepage';
 import { PdfPage } from '../pdf/pdf';
+import {Events} from 'ionic-angular';
 
 /*
   Generated class for the Login page.
@@ -19,8 +20,8 @@ import { PdfPage } from '../pdf/pdf';
 export class LoginPage extends BasePage{
 	username: string;
 	password: string;
-  	constructor(public navCtrl: NavController, public navParams: NavParams, private auth: AuthService, public alertCtrl: AlertController) {
-  		super(navCtrl, navParams);
+  	constructor(public navCtrl: NavController, public navParams: NavParams, private auth: AuthService, public alertCtrl: AlertController, public events: Events) {
+  		super(events);
   		this.username = '';
   		this.password = '';
   	}

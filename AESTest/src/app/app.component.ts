@@ -7,6 +7,7 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { TouchIdPage } from '../pages/touch-id/touch-id';
 import { PdfPage } from '../pages/pdf/pdf';
+import {Events} from 'ionic-angular';
 
 let storage = new Storage();
 
@@ -15,8 +16,10 @@ let storage = new Storage();
 })
 export class MyApp {
   rootPage: any;
+  action_time: any;
+  idleChecker: any;
 
-  constructor(platform: Platform) {
+  constructor(platform: Platform, public events: Events) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -33,7 +36,29 @@ export class MyApp {
           {
             this.rootPage = LoginPage;
           }
-        });  
+        });
+
+        this.checkIdle();
     });
+  }
+
+  checkIdle() {
+    this.action_time = new Date().getTime();
+
+    this.events.subscribe('action_user',() => {
+      console.log('action_user');
+      this.action_time = new Date().getTime();          
+    });  
+
+    var self = this;
+
+    this.idleChecker = setInterval(function() {
+         var current_time = new Date().getTime();
+         if( current_time - self.action_time > 60 * 1000 )
+         {
+           console.log('timeout');
+           self.action_time = current_time;
+         }
+     }, 1000 * 10);
   }
 }

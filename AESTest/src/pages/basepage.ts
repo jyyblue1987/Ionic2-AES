@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import {Events} from 'ionic-angular';
 /*
   Generated class for the Login page.
 
@@ -10,15 +10,11 @@ import { NavController, NavParams } from 'ionic-angular';
   providers: []
 })
 export class BasePage {
-	constructor(public navCtrl: NavController, public navParams: NavParams) {
+	constructor(public events: Events) {
   		
   	}
 
   	ionViewDidEnter() {
-  		console.log('ionViewDidEnter BasePage');	
-  	}
-
-  	ionViewDidLeave() {
-  		console.log('ionViewDidLeave BasePage');	
+  		this.events.publish('action_user');
   	}
 }
