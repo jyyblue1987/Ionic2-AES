@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {AuthService} from '../../providers/auth-service';
 import { AlertController } from 'ionic-angular';
+import { BasePage } from '../basepage';
+import { PdfPage } from '../pdf/pdf';
 
 /*
   Generated class for the Login page.
@@ -14,16 +16,13 @@ import { AlertController } from 'ionic-angular';
   templateUrl: 'login.html',
   providers: [AuthService]
 })
-export class LoginPage {
+export class LoginPage extends BasePage{
 	username: string;
 	password: string;
   	constructor(public navCtrl: NavController, public navParams: NavParams, private auth: AuthService, public alertCtrl: AlertController) {
+  		super(navCtrl, navParams);
   		this.username = '';
   		this.password = '';
-  	}
-
-  	ionViewDidLoad() {
-    	console.log('ionViewDidLoad LoginPage');
   	}
 
   	login(event): void {  		
@@ -32,6 +31,7 @@ export class LoginPage {
         });
      	
      	// 
+     	this.navCtrl.push(PdfPage);
   	}
 
   	showMessage(message:string) {

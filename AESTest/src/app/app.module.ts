@@ -9,7 +9,7 @@ import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
-    MyApp,
+    MyApp,    
     HomePage,
     LoginPage,
     TouchIdPage,
@@ -21,7 +21,7 @@ import { PdfViewerComponent } from 'ng2-pdf-viewer';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
+    MyApp,    
     HomePage,
     LoginPage,
     TouchIdPage,

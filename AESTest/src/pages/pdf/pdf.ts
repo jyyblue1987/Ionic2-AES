@@ -3,7 +3,7 @@ import { NavController, NavParams, Platform } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { File } from '@ionic-native/file';
 import { FileOpener } from '@ionic-native/file-opener';
-
+import { BasePage } from '../basepage';
 /*
   Generated class for the Pdf page.
 
@@ -23,13 +23,15 @@ import { FileOpener } from '@ionic-native/file-opener';
   templateUrl: 'pdf.html',
   providers: [File, FileOpener]
 })
-export class PdfPage {
+export class PdfPage extends BasePage{
 	pdfSrc: string = '';
   	page: number = 1;
   	zoom: number = 100;
   	zoompdf: number = 1.0;
 
-  	constructor(public navCtrl: NavController, public navParams: NavParams, private file: File, private fileOpener: FileOpener, public alertCtrl: AlertController, public plt: Platform) {}
+  	constructor(public navCtrl: NavController, public navParams: NavParams, private file: File, private fileOpener: FileOpener, public alertCtrl: AlertController, public plt: Platform) {
+  		super(navCtrl, navParams);
+  	}
 
   	ionViewDidLoad() {
     console.log('ionViewDidLoad PdfPage');
