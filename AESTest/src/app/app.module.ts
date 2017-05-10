@@ -7,6 +7,9 @@ import { TouchIdPage } from '../pages/touch-id/touch-id';
 import { PdfPage } from '../pages/pdf/pdf';
 import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
+import {HttpModule, Http, XHRBackend, RequestOptions} from '@angular/http';
+import {httpFactory} from "../providers/http.factory";
+
 @NgModule({
   declarations: [
     MyApp,    
@@ -28,6 +31,11 @@ import { PdfViewerComponent } from 'ng2-pdf-viewer';
     PdfPage,
     PdfViewerComponent
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
+              {
+            provide: Http,
+            useFactory: httpFactory,
+            deps: [XHRBackend, RequestOptions]
+        }]
 })
 export class AppModule {}

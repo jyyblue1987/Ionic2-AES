@@ -33,14 +33,14 @@ export class AuthService {
 
   	login(username:string, password:string): any {
   		// mock login 
-  		return Observable.create(observer => {
-            observer.next({username: username, password: password});
-            observer.complete();
-        });
-	    // return this.http.get( './mocks/login.json' )
-     //    	.map((res: Response) => {
-     //    		return res.json();
-     //    	});
+  		// return Observable.create(observer => {
+    //         observer.next({username: username, password: password});
+    //         observer.complete();
+    //     });
+	    return this.http.get( 'http://www.test.com/mocks/login.json' )
+        	.map((res: Response) => {
+        		return res;
+        	});
   	}
 
   	encrypt(username: string, password: string): any {
