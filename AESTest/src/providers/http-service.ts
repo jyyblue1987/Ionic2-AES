@@ -8,14 +8,16 @@ import {
     Response,
     Headers
 } from '@angular/http';
+
 import { Observable } from 'rxjs/Observable';
+import {Events} from 'ionic-angular';
 
 import 'rxjs/Rx';
 
 @Injectable()
 export class HttpService extends Http {
     constructor(backend: ConnectionBackend,
-                defaultOptions: RequestOptions) {
+                defaultOptions: RequestOptions, public events: Events) {
         super(backend, defaultOptions);
     }
 
@@ -26,6 +28,7 @@ export class HttpService extends Http {
      * @returns {Observable<Response>}
      */
     request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
+    	this.events.publish('http_request');
         return super.request(url, options);
     }
 

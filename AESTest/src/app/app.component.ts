@@ -52,6 +52,11 @@ export class MyApp {
       this.action_time = new Date().getTime();          
     });  
 
+    this.events.subscribe('http_request',() => {
+      console.log('http_request');
+      this.action_time = new Date().getTime();          
+    });  
+
     var self = this;
 
     this.idleChecker = setInterval(function() {

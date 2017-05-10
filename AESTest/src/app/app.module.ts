@@ -8,6 +8,7 @@ import { PdfPage } from '../pages/pdf/pdf';
 import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 import {HttpModule, Http, XHRBackend, RequestOptions} from '@angular/http';
+import {Events} from 'ionic-angular';
 import {httpFactory} from "../providers/http.factory";
 
 @NgModule({
@@ -35,7 +36,7 @@ import {httpFactory} from "../providers/http.factory";
               {
             provide: Http,
             useFactory: httpFactory,
-            deps: [XHRBackend, RequestOptions]
+            deps: [XHRBackend, RequestOptions, Events]
         }]
 })
 export class AppModule {}

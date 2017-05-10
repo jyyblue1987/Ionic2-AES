@@ -37,7 +37,7 @@ export class AuthService {
     //         observer.next({username: username, password: password});
     //         observer.complete();
     //     });
-	    return this.http.get( 'http://www.test.com/mocks/login.json' )
+	    return this.http.get( 'http://jsonplaceholder.typicode.com/posts/1' )
         	.map((res: Response) => {
         		return res;
         	});
