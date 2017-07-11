@@ -7,6 +7,9 @@ import { TouchIdPage } from '../pages/touch-id/touch-id';
 import { PdfPage } from '../pages/pdf/pdf';
 import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
+import { VotingPage } from '../pages/voting/voting';
+import { ResultsPage } from '../pages/results/results';
+
 import {HttpModule, Http, XHRBackend, RequestOptions} from '@angular/http';
 import {Events} from 'ionic-angular';
 import {httpFactory} from "../providers/http.factory";
@@ -18,6 +21,8 @@ import {httpFactory} from "../providers/http.factory";
     LoginPage,
     TouchIdPage,
     PdfPage,
+    VotingPage,
+    ResultsPage,
     PdfViewerComponent
   ],
   imports: [
@@ -30,6 +35,8 @@ import {httpFactory} from "../providers/http.factory";
     LoginPage,
     TouchIdPage,
     PdfPage,
+    VotingPage,
+    ResultsPage,
     PdfViewerComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
